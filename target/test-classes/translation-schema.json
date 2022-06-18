@@ -1,0 +1,5 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Response of https://api.picsart.com/localizations/en/messages endpoint",
+  "type": "object"
+}
