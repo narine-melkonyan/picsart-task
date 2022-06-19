@@ -1,6 +1,7 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 public class LoginTest extends TestBase {
@@ -13,22 +14,22 @@ public class LoginTest extends TestBase {
         homePage.acceptAllCookie();
         homePage.clickOnLogo();
         String currentpageurl = homePage.getCurrentPageUrl();
-        System.out.println(currentpageurl);
-        Assert.assertEquals(currentpageurl, "https://picsart.com/");
+        Assert.assertEquals(currentpageurl, BASE_URL + "/");
 
     }
 
+    // This test runs only with "mvn test"
     @Test(retryAnalyzer = Retry.class)
-    public void verifyUrlWhenLogIn() {
+    @Parameters({"username", "password"})
+    public void verifyUrlWhenLogIn(String username, String password) {
 
         HomePage homePage = new HomePage(driver);
         homePage.acceptAllCookie();
-        homePage.applyLogin("narinebettest", "_f8RyXePcdB.@uT");
+        homePage.applyLogin(username, password);
         homePage.myProfile();
         homePage.clickOnLogo();
-        String currentpageurl = homePage.getCurrentPageUrl();
-        System.out.println(currentpageurl);
-        Assert.assertEquals(currentpageurl, "https://picsart.com/create");
+        String currentPageUrl = homePage.getCurrentPageUrl();
+        Assert.assertEquals(currentPageUrl, BASE_URL + "/create");
 
     }
 
@@ -38,7 +39,7 @@ public class LoginTest extends TestBase {
         HomePage homePage = new HomePage(driver);
         homePage.acceptAllCookie();
         homePage.goToBlog();
-        Assert.assertEquals(homePage.getCurrentPageUrl(), "https://picsart.com/blog");
+        Assert.assertEquals(homePage.getCurrentPageUrl(), BASE_URL + "/blog");
 
     }
 
@@ -49,16 +50,16 @@ public class LoginTest extends TestBase {
         homePage.goToBlog();
         homePage.goToDesignSchool();
         homePage.waitForPageUrlContains("design-school");
-        Assert.assertEquals(homePage.getCurrentPageUrl(), "https://picsart.com/blog/category/design-school");
+        Assert.assertEquals(homePage.getCurrentPageUrl(), BASE_URL + "/blog/category/design-school");
         homePage.goToTrends();
         homePage.waitForPageUrlContains("trends");
-        Assert.assertEquals(homePage.getCurrentPageUrl(), "https://picsart.com/blog/category/trends");
+        Assert.assertEquals(homePage.getCurrentPageUrl(), BASE_URL + "/blog/category/trends");
         homePage.goToPicsartPro();
         homePage.waitForPageUrlContains("picsart-pro");
-        Assert.assertEquals(homePage.getCurrentPageUrl(), "https://picsart.com/blog/category/picsart-pro");
+        Assert.assertEquals(homePage.getCurrentPageUrl(), BASE_URL + "/blog/category/picsart-pro");
         homePage.goToNews();
         homePage.waitForPageUrlContains("news");
-        Assert.assertEquals(homePage.getCurrentPageUrl(), "https://picsart.com/blog/category/news");
+        Assert.assertEquals(homePage.getCurrentPageUrl(), BASE_URL + "/blog/category/news");
     }
 
     @Test(retryAnalyzer = Retry.class)
@@ -68,7 +69,7 @@ public class LoginTest extends TestBase {
         homePage.goToBlog();
         homePage.searchInput("test");
         homePage.waitForPageUrlContains("test");
-        Assert.assertEquals(homePage.getCurrentPageUrl().contains("test"), true);
+        Assert.assertTrue(homePage.getCurrentPageUrl().contains("test"));
     }
 
 
