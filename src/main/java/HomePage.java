@@ -2,10 +2,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.List;
 
@@ -60,7 +62,7 @@ public class HomePage extends BasePage {
         System.out.println("loged in");
     }
 
-    public static final String profilexpath = "//span[@class='rc-header-dev-profile-button-0-1-1093']";
+    public static final String profilexpath = "//span[contains(@class,'rc-header-dev-profile-button')]";
 
     public void myProfile() {
         waitForElementPresent(profilexpath).click();
@@ -137,11 +139,38 @@ public class HomePage extends BasePage {
         return -1;
     }
 
+    public WebElement findActiveElementFromSlideList() {
+
+        waitForSlideList();
+
+        List<WebElement> slideListImgs = driver.findElements(By.cssSelector(slideListElementsSelector));
+        for (int i = 0; i < slideListImgs.size(); i++) {
+            WebElement webElement = slideListImgs.get(i);
+            if (Arrays.asList(webElement.getDomAttribute("class").split(" ")).contains("active")) {
+                return webElement;
+            }
+        }
+        return null;
+    }
+
+    public static final String slideListItemsSelector = "//*[contains(@class,'main-carousel-suggestions-itemHolder')]";
+
+    public List<WebElement> findSlideListItems() {
+
+        waitForSlideList();
+
+        List<WebElement> slideListItems = driver.findElements(By.xpath(slideListItemsSelector));
+
+        return slideListItems;
+    }
+
 
     public void clickRightSlideListButton() {
-
         driver.findElement(By.cssSelector(".main-carousel-root-0-2-30 .right.arrow-button")).click();
+    }
 
+    public void clickLeftSlideListButton() {
+        driver.findElement(By.cssSelector(".main-carousel-root-0-2-30 .left.arrow-button")).click();
     }
 
     public void waitForSlideList() {
@@ -152,22 +181,42 @@ public class HomePage extends BasePage {
         });
     }
 
+    public String getSlideImageUrlPath(String imageSrc) {
+        String query;
+        try {
+            URL url = new URL(imageSrc);
+            query = url.getQuery();
+
+        } catch (MalformedURLException e) {
+            return null;
+        }
+
+        try {
+            String[] pairs = query.split("&");
+            for (String pair : pairs) {
+                int idx = pair.indexOf("=");
+                String name = URLDecoder.decode(pair.substring(0, idx), "UTF-8");
+                if (name.equals("url")) {
+                    String imageUrl = URLDecoder.decode(pair.substring(idx + 1), "UTF-8");
+                    try {
+                        URL url = new URL(imageUrl);
+                        return url.getPath();
+                    } catch (MalformedURLException e) {
+                        return null;
+                    }
+
+                }
+            }
+        } catch (UnsupportedEncodingException e) {
+            return null;
+        }
+        return null;
+    }
+
     public String getCurrentPageUrl() {
 
         return driver.getCurrentUrl();
 
     }
-
-
-//    public void logOut(){
-//
-//        boolean isuserlogout = isElementPresent(userprofile);
-//        if(isuserlogout == true){
-//            action.moveToElement(userprofile);
-//            waitForElementPresent(userlogout).click();
-//        }
-//
-//    }
-
 
 }
