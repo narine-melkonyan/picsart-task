@@ -1,7 +1,6 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.UnsupportedEncodingException;
@@ -17,120 +16,51 @@ public class HomePage extends BasePage {
         super(driver);
     }
 
-    Actions action = new Actions(driver);
 
-    public static final String acceptcookieelementxpath = "//button[text()='Accept All Cookies']";
-
-    public void acceptAllCookie() {
-        waitForElementPresent1(acceptcookieelementxpath).click();
-    }
-
-    public static final String logoxpath = "//a[@data-test='picsart-logo']";
-
-    public void clickOnLogo() {
-
-        waitForElementPresent1(logoxpath).click();
-
-    }
-
-    public static final String loginxpath = "//button[@data-mode='login']";
-
-    public void logIn() {
-        waitForElementPresent1(loginxpath).click();
-    }
-
-
-    public static final String usernamexpath = "//input[@name='username']";
-
-    public void setUsername(String userName) {
-        waitForElementPresent1(usernamexpath).sendKeys(userName);
-    }
-
-    public static final String passwordxpath = "//input[@name='password']";
-
-    public void setPassword(String pass) {
-        waitForElementPresent1(passwordxpath).sendKeys(pass);
-    }
-
-    public static final String applyloginxpath = "//button[@data-test='login']";
-
-    public void applyLogin(String user, String pass) {
-        logIn();
-        setUsername(user);
-        setPassword(pass);
-        waitForElementPresent(applyloginxpath).click();
-        System.out.println("loged in");
-    }
-
-    public static final String profilexpath = "//span[contains(@class,'rc-header-dev-profile-button')]";
-
-    public void myProfile() {
-        waitForElementPresent(profilexpath).click();
-    }
-
-    public boolean logedIn() {
-        return waitForElementPresent1(profilexpath).isDisplayed();
-    }
-
-
-    public static final String logoutxpath = "//a[@class='rc-header-dev-top-profile-content-userLink-0-1-2107 log-out']";
-
-    public void logOut() {
-        waitForElementPresent1(logoutxpath).click();
-    }
-
-
-    public static final String blogxpath = "//a[text()='Blog']";
-    public static final String designschoolxpath = "//a[text()='Design School']";
-    public static final String trendsxpath = "//a[text()='Trends']";
-    public static final String picsartproxpath = "//a[text()='Picsart Pro']";
-    public static final String newsxpath = "//a[text()='News']";
+    public static final String blogXpath = "//a[text()='Blog']";
+    public static final String designSchoolXpath = "//a[text()='Design School']";
+    public static final String trendsXpath = "//a[text()='Trends']";
+    public static final String picsartProXpath = "//a[text()='Picsart Pro']";
+    public static final String newsXpath = "//a[text()='News']";
 
     public void goToBlog() {
-        waitForElementPresent1(blogxpath).click();
+        waitForElementPresent1(blogXpath).click();
     }
 
     public void goToDesignSchool() {
-        waitForElementPresent1(designschoolxpath).click();
+        waitForElementPresent1(designSchoolXpath).click();
     }
 
     public void goToTrends() {
-        waitForElementPresent1(trendsxpath).click();
+        waitForElementPresent1(trendsXpath).click();
     }
-
     public void goToPicsartPro() {
-        waitForElementPresent1(picsartproxpath).click();
+        waitForElementPresent1(picsartProXpath).click();
     }
-
     public void goToNews() {
-        waitForElementPresent1(newsxpath).click();
+        waitForElementPresent1(newsXpath).click();
     }
 
 
-    public static final String searchbuttonxpath = "//button[contains(@class,'searchButton')]";
-
+    public static final String searchButtonXpath = "//button[contains(@class,'searchButton')]";
     public void clickSearchButton() {
-        waitForElementPresent1(searchbuttonxpath).click();
+        waitForElementPresent1(searchButtonXpath).click();
     }
 
-    public static final String searchinputxpath = "//input[contains(@class,'searchInput')]";
-
+    public static final String searchInputXpath = "//input[contains(@class,'searchInput')]";
     public void searchInput(String s) {
         clickSearchButton();
-        WebElement element = waitForElementPresent1(searchinputxpath);
+        WebElement element = waitForElementPresent1(searchInputXpath);
         element.sendKeys(s);
         element.submit();
     }
 
 
-    public static final String slideListElementsSelector = ".main-carousel-item-root-0-2-34";
-
+    public static final String slideListElementsXpath = "//*[contains(@class,'main-carousel-item-root')]";
 
     public int findActiveElementIndexFromSlideList() {
-
         waitForSlideList();
-
-        List<WebElement> slideListImgs = driver.findElements(By.cssSelector(slideListElementsSelector));
+        List<WebElement> slideListImgs = driver.findElements(By.xpath(slideListElementsXpath));
         for (int i = 0; i < slideListImgs.size(); i++) {
             if (Arrays.asList(slideListImgs.get(i).getDomAttribute("class").split(" ")).contains("active")) {
                 return i;
@@ -140,10 +70,8 @@ public class HomePage extends BasePage {
     }
 
     public WebElement findActiveElementFromSlideList() {
-
         waitForSlideList();
-
-        List<WebElement> slideListImgs = driver.findElements(By.cssSelector(slideListElementsSelector));
+        List<WebElement> slideListImgs = driver.findElements(By.xpath(slideListElementsXpath));
         for (int i = 0; i < slideListImgs.size(); i++) {
             WebElement webElement = slideListImgs.get(i);
             if (Arrays.asList(webElement.getDomAttribute("class").split(" ")).contains("active")) {
@@ -153,30 +81,27 @@ public class HomePage extends BasePage {
         return null;
     }
 
-    public static final String slideListItemsSelector = "//*[contains(@class,'main-carousel-suggestions-itemHolder')]";
+    public static final String slideListItemsXpath = "//*[contains(@class,'main-carousel-suggestions-itemHolder')]";
 
     public List<WebElement> findSlideListItems() {
-
         waitForSlideList();
-
-        List<WebElement> slideListItems = driver.findElements(By.xpath(slideListItemsSelector));
-
+        List<WebElement> slideListItems = driver.findElements(By.xpath(slideListItemsXpath));
         return slideListItems;
     }
 
 
     public void clickRightSlideListButton() {
-        driver.findElement(By.cssSelector(".main-carousel-root-0-2-30 .right.arrow-button")).click();
+        driver.findElement(By.xpath("//button[contains(@class,'right arrow-button')]")).click();
     }
 
     public void clickLeftSlideListButton() {
-        driver.findElement(By.cssSelector(".main-carousel-root-0-2-30 .left.arrow-button")).click();
+        driver.findElement(By.xpath("//button[contains(@class,'left arrow-button')]")).click();
     }
 
     public void waitForSlideList() {
         WebDriverWait wait = new WebDriverWait(driver, java.time.Duration.ofSeconds(20));
         wait.until((driver) -> {
-            List<WebElement> slideListImgs = driver.findElements(By.cssSelector(slideListElementsSelector));
+            List<WebElement> slideListImgs = driver.findElements(By.xpath(slideListElementsXpath));
             return slideListImgs.size() == 9;
         });
     }
