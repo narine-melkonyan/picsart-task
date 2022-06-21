@@ -1,9 +1,8 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.*;
-import org.openqa.selenium.NoSuchElementException;
 
 import java.util.function.Function;
 
@@ -13,7 +12,6 @@ public class BasePage {
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
-        //PageFactory.initElements(driver,this);
     }
 
     public boolean isElementPresent(final String elementxpath) {
@@ -46,12 +44,12 @@ public class BasePage {
                 .pollingEvery(java.time.Duration.ofMillis(1000))
                 .ignoring(NoSuchElementException.class);
 
-        WebElement existelement = wait.until(new Function<WebDriver, WebElement>() {
+        WebElement existElement = wait.until(new Function<WebDriver, WebElement>() {
             public WebElement apply(WebDriver driver) {
                 return driver.findElement(By.xpath(elementxpath));
             }
         });
-        return existelement;
+        return existElement;
 
     }
 
